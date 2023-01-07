@@ -1,7 +1,16 @@
 #!/bin/bash
 
-gcc -Wall -pedantic -Werror -Wextra -c *.c
+# Create an empty list of object files
+objects=""
 
-ar -rc liball.a *.o
+# Iterate over all .c files in the current directory
+for c_file in *.c; do
+  # Compile the .c file into an object file
+  gcc -c $c_file
+  # Add the object file to the list
+  objects="$objects $(basename $c_file .c).o"
+done
 
-ranlib liball.a
+# Create the static library from the object files
+ar rcs liball.a $objects
+
